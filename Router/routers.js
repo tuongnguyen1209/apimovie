@@ -15,4 +15,8 @@ router.route("/linkmovie/:namemovie").get(movieController.getLinkMovie);
 
 router.route("/all/:link1/:link2?").get(movieController.getAllMovie);
 
+router.get('name',(req,res)=>{
+    res.json({'hello'})
+})
+
 module.exports = router;
