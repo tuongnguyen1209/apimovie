@@ -213,9 +213,7 @@ exports.getLinkMovie = (req, res) => {
 
 let getLinkVideo = async (url) => {
   try {
-    const browser = await puppeteer.launch({
-      args: ["--no-sandbox"],
-    });
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(url);
 
