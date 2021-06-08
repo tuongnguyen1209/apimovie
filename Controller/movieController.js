@@ -199,38 +199,45 @@ exports.getAllMovie = (req, res) => {
 
 exports.getLinkMovie = (req, res) => {
   let link = req.params.namemovie;
-  let url = `https://phim1080z.com/${link}`;
+  let diachi = `http://vaophim.com/${link}/play-sv1.html?svid=1`;
 
-  getLinkVideo(url).then((linkmovie) => {
-    res.status(200).send(
-      JSON.stringify({
-        status: "success",
-        data: {
-          linkmovie,
-        },
-      })
-    );
+  getLinkVideo(diachi).then((result) => {
+    res.status(200).json({
+      status: "success",
+      data: {
+        result,
+      },
+    });
   });
 };
 
 let getLinkVideo = async (url) => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.goto(url);
+  try {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.goto(url);
 
-  // await page.click('#navigation > li:nth-child(3) > a');
+    // await page.waitForRequest;
+    await page.waitForSelector(".jw-media");
+    await page.waitForSelector(".jw-media video");
+    await page.waitForSelector(
+      ".jw-icon.jw-icon-display.jw-button-color.jw-reset.jw-idle-label"
+    );
+    await page.click(
+      ".jw-icon.jw-icon-display.jw-button-color.jw-reset.jw-idle-label"
+    );
+    // await page.waitForSelector("#ajax-player video[src]");
 
-  await page.waitForSelector("button.direction-video");
-  await page.click(" button.direction-video");
-
-  await page.waitForSelector("#fimfast-player");
-  await page.waitForSelector("#fimfast-player video");
-  // await page.waitForTimeout('1000')
-  await page.waitForSelector("#fimfast-player video.player-video[src]");
-  const Url = await page.evaluate(() => {
-    return document.querySelector("#fimfast-player video").getAttribute("src");
-  });
-  console.log(Url);
-  await browser.close();
-  return await Url;
+    const Url = await page.evaluate(() => {
+      return document
+        .querySelector("video.jw-video.jw-reset")
+        .getAttribute("src");
+    });
+    // console.log(Url);
+    await browser.close();
+    return await Url;
+  } catch (e) {
+    return "";
+  }
+  return "";
 };
