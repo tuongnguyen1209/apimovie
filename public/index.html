@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tool</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- vuejs cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+    <!-- bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="container" id="app">
+      <div class="form">
+        <form>
+          <input
+            type="text"
+            id="txtinput"
+            placeholder="Nhập vào một địa chỉ!!!"
+            v-model="txtText"
+          />
+          <input
+            type="button"
+            value="Tìm kiếm"
+            id="search"
+            v-on:click="search"
+            v-bind:disabled="isSearching"
+          />
+        </form>
+      </div>
+      <div class="mytable" v-show="show">
+        <div class="mysearch" v-if="isSearching">
+          <img src="images/search.gif" alt="" />
+        </div>
+        <div v-else>
+          <div class="action d-flex justify-content-around p-3">
+            <button v-on:click="locLinkmovie" class="btn btn-outline-success">
+              Lọc link Phim
+            </button>
+            <button class="btn btn-outline-danger" v-on:click="insertAll">
+              Thêm vào database
+            </button>
+          </div>
+          <table>
+            <thead>
+              <th></th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Title English</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in listMovie" :key="index">
+                <td>
+                  <div
+                    v-if="listCheck[index]==2"
+                    class="spinner-border text-primary"
+                  ></div>
+                  <div v-else-if="listCheck[index]==0" class="text-danger">
+                    <i class="fas fa-times"></i>
+                  </div>
+                  <div v-else class="text-primary">
+                    <i class="fas fa-check"></i>
+                  </div>
+                </td>
+                <td>
+                  <img :src="item.img" />
+                </td>
+                <td>{{item.title}}</td>
+                <td>{{item.titleEnglish}}</td>
+                <td>{{item.listChaps.length}}</td>
+                <td>
+                  <button
+                    data-toggle="modal"
+                    data-target="#myModal"
+                    v-on:click="getInfoMovie(index)"
+                    class="btn btn-success"
+                  >
+                    Xem chi tiết
+                  </button>
+                  <button
+                    class="btn btn-info"
+                    v-on:click="choceServe(index)"
+                    data-toggle="modal"
+                    data-target="#myModalServe"
+                  >
+                    Tải Lại Video
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div v-show="!show">
+        <div class="text-center text-danger p-4">{{ error}}</div>
+      </div>
+
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="d-flex flex-wrap">
+                <h2 class="w-100">{{listMovie[index].title}}</h2>
+                <h4 class="w-100">{{listMovie[index].titleEnglish}}</h4>
+                <div class="w-75">
+                  <p>{{listMovie[index].directors}}</p>
+                  <p>
+                    Diễn Viên:
+                    <span
+                      v-for="(item, index) in listMovie[index].listactors"
+                      :key="index"
+                      >{{item.name}},
+                    </span>
+                  </p>
+                  <p>
+                    Thể loại:
+                    <span
+                      v-for="(item, index) in listMovie[index].listCategories"
+                      :key="index"
+                      >{{item.nameCate}},</span
+                    >
+                  </p>
+                  <p>{{listMovie[index].contents}}</p>
+                  <p>
+                    <span
+                      v-for="(item, index) in listMovie[index].listChaps"
+                      :key="index"
+                    >
+                      {{item.nameChap}}: <strong>{{item.link}}</strong>
+                      <br />
+                    </span>
+                  </p>
+                </div>
+                <div class="w-25">
+                  <img class="w-100" :src="listMovie[index].img" alt="" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="myModalServe">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group">
+                <select v-model="serve" class="form-control">
+                  <option value="0">server 0</option>
+                  <option value="1">server 1</option>
+                  <option value="2">server 2</option>
+                </select>
+                {{serve}}
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-success"
+                data-dismiss="modal"
+                v-on:click="reloadLink"
+              >
+                Reload Link
+              </button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./js/script.js"></script>
+  </body>
+</html>
