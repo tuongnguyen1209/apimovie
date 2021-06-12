@@ -8,4 +8,8 @@ routerMovie
   .get(movieController.getAll)
   .post(movieController.insertMany);
 
+routerMovie.route("/movie/:_id").get(movieController.getmovie);
+
+routerMovie.route("/categories").get(movieController.getCategories);
+
 module.exports = routerMovie;
