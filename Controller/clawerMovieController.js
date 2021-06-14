@@ -16,9 +16,10 @@ const getMovieInfo = async (link) => {
   };
 
   async function crawler() {
+    let $;
     try {
       // Lấy dữ liệu từ trang crawl đã được parseDOM
-      var $ = await rp(options);
+      $ = await rp(options);
     } catch (error) {
       return error;
     }
@@ -200,7 +201,7 @@ let getLinkVideo = async (url) => {
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
   try {
-  await page.goto(url);
+    await page.goto(url);
 
     // await page.waitForRequest;
     await page.waitForSelector(".jw-media", { timeout: 5000 });

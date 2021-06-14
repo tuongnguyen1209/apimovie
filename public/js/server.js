@@ -3,7 +3,7 @@ const localol = "https://my-api-movie.herokuapp.com/apis/v1/";
 const localv2 = "http://localhost:7300/apis/v2/";
 
 export const getAllMovie = async (link) => {
-  let a = await fetch(`${localol}getallmovie`, {
+  let a = await fetch(`${localv1}getallmovie`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

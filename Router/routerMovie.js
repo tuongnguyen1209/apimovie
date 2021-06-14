@@ -10,6 +10,7 @@ routerMovie
 
 routerMovie.route("/movie/:_id").get(movieController.getmovie);
 
-routerMovie.route("/categories").get(movieController.getCategories);
+routerMovie.route("/country").get(movieController.getCountry);
+routerMovie.route("/search").get(movieController.searchMovie);
 
 module.exports = routerMovie;

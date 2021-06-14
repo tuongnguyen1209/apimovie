@@ -7,6 +7,7 @@ const routers = require("./Router/routers");
 const DATABASE = require("./Database/DatabaseConfig");
 const events = require("events");
 const routerMovie = require("./Router/routerMovie");
+const routerUser = require("./Router/userRouter");
 
 const PORT = process.env.PORT || 7300;
 
@@ -33,6 +34,7 @@ mongoose
 //router
 app.use("/apis/v1", routers);
 app.use("/apis/v2", routerMovie);
+app.use("/apis/v2/user", routerUser);
 
 // app.get("/topmovie", (req, res) => {
 //   // res.send('hello')
