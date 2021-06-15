@@ -22,8 +22,9 @@ const download = function (uri, response, callback) {
 
 exports.getVideo = (req, res) => {
   const link = req.params[0];
-  // console.log(link);
-  const fileUrl = `http://103.27.236.37/${link}`;
+  console.log(link);
+  const fileUrl = encodeURI(`http://${link}`);
+  console.log(fileUrl);
   try {
     let range = req.headers.range;
     if (!range) {
