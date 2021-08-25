@@ -28,7 +28,7 @@ exports.getNav = (req, res) => {
       let listCategory = [];
       for (let i = 0; i < categorys.length; i++) {
         let e = $(categorys[i]);
-        let cate = e.find("a").text().trim();
+        let cate = e.find("a").text().trim().slice(1);
         let linkCate = e.find("a").attr("href").slice(18);
 
         listCategory.push({
