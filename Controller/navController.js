@@ -32,7 +32,8 @@ exports.getNav = (req, res) => {
           .find("a")
           .text()
           .trim()
-          .replace(/[^a-zA-Z ]/g, "");
+          .replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "");
+
         let linkCate = e.find("a").attr("href").slice(18);
 
         listCategory.push({
